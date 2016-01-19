@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sina.sinaluncher.ui.widget.FiexdSizeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="invisible"
+    android:background="@android:color/transparent"
+    >
+    <com.sina.sinaluncher.ui.widget.LetterSpacingTextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/grid_container"
+        android:layout_marginBottom="@dimen/dialog_fragment_title_margin_bottom"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dialog_fragment_title_text_size"
+        android:text="@string/main_fragment_title"/>
+    <FrameLayout
+        android:id="@+id/grid_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/dialog_fragment_grid_horizontal_padding"
+        android:paddingRight="@dimen/dialog_fragment_grid_horizontal_padding"
+        android:background="@drawable/sal_corners_bg"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center">
+
+        <com.sina.sinaluncher.ui.widget.AutoHeightGridView
+            android:id="@+id/sal_gridview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:numColumns="3"
+            android:scrollbars="none" />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/grid_container"
+        android:layout_marginTop="@dimen/dialog_fragment_button_margin_top"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/sal_dismiss"
+        />
+</com.sina.sinaluncher.ui.widget.FiexdSizeLayout>
