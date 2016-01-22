@@ -5,7 +5,7 @@ package com.sina.sinaluncher.network;
  */
 public class ServerConfig {
     public static final String HOST = "";
-    public static final String APP_LIST = "";
+    public static final String add = "http://sinaapp.sina.cn/api/androidswitch.d.html";
 
     public static String getAppListUrl(){
         return "";

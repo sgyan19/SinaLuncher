@@ -7,15 +7,20 @@ import android.graphics.drawable.Drawable;
  * Created by sinash94857 on 2016/1/7.
  */
 public class SALInfo {
-    public String packageName = "";
-    public boolean isInstall = false;
-    public int appIcon = 0;
-    public Drawable appIconDrawable = null;
-    public String iconUrl;
-    public String unInstallIconUrl;
-    public String appName = "";
     public int appId = 0;
-    public Intent intent = null;
-    public boolean self = false;
+    public String packageName = "";
+    public String appName = "";
+    public int entryStatus = 1;
+    public String iconUrl;
+    public String inList = "yse";
     public String downloadUrl = "";
+
+    public boolean isInstall = false;
+    public boolean self = false;
+    public Intent intent = null;
+    public Drawable appIconDrawable = null;
+    public Drawable inInstallIconDrawable = null;
+
+    // 废弃
+    public int appIcon = 0;
 }

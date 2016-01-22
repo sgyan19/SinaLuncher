@@ -1,15 +1,23 @@
-package com.sina.sinaluncher.core;
+package com.sina.sinaluncher.utils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.widget.Toast;
 
 import com.sina.sinaluncher.R;
+import com.sina.sinaluncher.core.SALInfo;
+import com.sina.sinaluncher.core.SALModel;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -122,24 +130,25 @@ public class Utils {
     }
 
 
-    public static List<SALInfo> converModel(SALModel model){
+    public static List<SALInfo> converModel(List<SALModel> models){
         List<SALInfo> result = new ArrayList<SALInfo>();
         int index = 0;
-        for(SALModel.Struct item : model.appList){
-            SALInfo i = new SALInfo();
-            i.packageName = item.packageName;
-            i.appName = item.appName;
-            i.iconUrl = item.appIcon;
-            i.unInstallIconUrl = item.unInstallIcon;
-            i.downloadUrl = item.download;
-            i.appId = index ++;
-            result.add(i);
+        for(SALModel model : models){
+            SALInfo info = new SALInfo();
+            info.appId = index++;
+            info.packageName = model.packageName;
+            info.iconUrl = model.appIcon;
+            info.appName = model.appName;
+            info.entryStatus = model.entryStatus;
+            info.downloadUrl = model.download;
+            info.inList = model.inList;
+            result.add(info);
         }
         return result;
     }
 
     // 通过包名检测系统中是否安装某个应用程序
-    public static boolean getAppsInfo(Context context, String packageName) {
+    public static boolean improveAppsInfo(Context context, String packageName) {
         if (packageName == null || "".equals(packageName)) {
             return false;
         }
@@ -155,9 +164,10 @@ public class Utils {
     }
 
     // 通过包名检测系统中是否安装某个应用程序
-    public static void getAppsInfo(Context context, List<SALInfo> sALInfos) {
+    public static SALInfo improveAppsInfo(Context context, List<SALInfo> sALInfos) {
         PackageManager manager = context.getPackageManager();
         String thisAppPackageName = context.getPackageName();
+        SALInfo self = null;
         List<ApplicationInfo> infos = manager.getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
         for(SALInfo item : sALInfos){
             for(ApplicationInfo info : infos){
@@ -169,12 +179,14 @@ public class Utils {
             }
             if(thisAppPackageName.equals(item.packageName)){
                 item.self = true;
+                self = item;
             }
         }
+        return self;
     }
 
     // 通过包名检测系统中是否安装某个应用程序
-    public static boolean[] getAppsInfo(Context context, String[] packageNames) {
+    public static boolean[] improveAppsInfo(Context context, String[] packageNames) {
         boolean[] result = new boolean[packageNames.length];
         List<ApplicationInfo> infos =context.getPackageManager().getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
         for(ApplicationInfo info : infos){
@@ -196,14 +208,83 @@ public class Utils {
         }
     }
 
+
+    private static Boolean isInstallMarket;
+
     public static void jumpMarket(Activity activity,SALInfo info){
         try {
             //Uri uri = Uri.parse("https://market.android.com/details?id="+ info.packageName);
             Intent in = new Intent(Intent.ACTION_VIEW);
             in.setData(Uri.parse("market://details?id=" + info.packageName));
-            
-            activity.startActivity(in);
+            if(isInstallMarket == null) {
+                List<ResolveInfo> list = activity.getPackageManager().queryIntentActivities(in, PackageManager.MATCH_DEFAULT_ONLY);
+                isInstallMarket = list.size() > 0;
+            }
+            if(isInstallMarket) {
+                activity.startActivity(in);
+            }else{
+                in.setData(Uri.parse(info.downloadUrl));
+                activity.startActivity(in);
+            }
         } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    /**
+     * 检测是否有网络
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkNetWork(Context context) {
+        int dd;
+        if ((dd = checkNetWorkStatue(context)) != 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @param context
+     * @return 0:无网络 1:2G 3G 4G 2:wifi
+     */
+    public static int checkNetWorkStatue(Context context) {
+
+        // 获取手机的连接服务管理器，这里是连接管理器类
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo.State wifiState=null;
+        try {
+            wifiState = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+                    .getState();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        NetworkInfo.State mobileState=null;
+        try {
+            mobileState = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+                    .getState();
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        if (wifiState != null && mobileState != null
+                && NetworkInfo.State.CONNECTED != wifiState
+                && NetworkInfo.State.CONNECTED == mobileState) {
+            return 1;
+        } else if (wifiState != null && mobileState != null
+                && NetworkInfo.State.CONNECTED == wifiState
+                && NetworkInfo.State.CONNECTED != mobileState) {
+            return 2;
+        } else if (wifiState != null && mobileState != null
+                && NetworkInfo.State.CONNECTED != wifiState
+                && NetworkInfo.State.CONNECTED != mobileState) {
+            return 0;
+        }
+        return 0;
     }
 }

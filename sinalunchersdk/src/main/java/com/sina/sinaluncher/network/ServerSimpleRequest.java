@@ -1,11 +1,21 @@
 package com.sina.sinaluncher.network;
 
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.sina.sinaluncher.utils.StorageUtils;
+import com.sina.sinaluncher.utils.Utils;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -168,6 +178,49 @@ public class ServerSimpleRequest {
             e.printStackTrace();
         } finally {
             bs = null;
+            if (urlConnection != null)
+                urlConnection.disconnect();
+        }
+        return null;
+    }
+
+    public static Drawable getDrawable(Context context,String theUrl) throws IOException {
+        String cacheDir = StorageUtils.getCacheDir(context);
+        int begin = theUrl.lastIndexOf('/');
+        String name = theUrl.substring(begin);
+        File picFile =  new File(cacheDir,name);
+        String newPath = picFile.getAbsolutePath();
+        if(picFile.exists()){
+            return BitmapDrawable.createFromPath(newPath);
+        }
+
+        URL url;
+        Log.d(TAG, "url --> "+theUrl);
+        HttpURLConnection urlConnection = null;
+        try {
+            url = new URL(theUrl);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setConnectTimeout(4000);
+            InputStream in = new BufferedInputStream(
+                    urlConnection.getInputStream());
+            int statusCode = urlConnection.getResponseCode();
+            if(statusCode == HttpURLConnection.HTTP_OK){
+                byte[] bs = new byte[1024];
+                int len = -1;
+                // 输出的文件流
+                OutputStream os = new FileOutputStream(newPath);
+                // 开始读取
+                while ((len = in.read(bs)) != -1) {
+                    os.write(bs, 0, len);
+                }
+                os.close();
+            }
+            in.close();
+            return BitmapDrawable.createFromPath(newPath);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } finally {
+
             if (urlConnection != null)
                 urlConnection.disconnect();
         }

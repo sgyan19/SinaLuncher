@@ -15,7 +15,7 @@ import android.widget.ImageView;
 
 import com.sina.sinaluncher.R;
 import com.sina.sinaluncher.core.SALInfo;
-import com.sina.sinaluncher.core.Utils;
+import com.sina.sinaluncher.utils.Utils;
 import com.sina.sinaluncher.ui.widget.AutoHeightGridView;
 import com.sina.sinaluncher.ui.widget.LetterSpacingTextView;
 
@@ -56,7 +56,7 @@ public class MainDialogFragment extends DialogFragment implements AdapterView.On
         mGridView = (AutoHeightGridView) view.findViewById(R.id.sal_gridview);
         mGridContainer = (ViewGroup) view.findViewById(R.id.grid_container);
         List<SALInfo> data = Utils.getTestData();
-        Utils.getAppsInfo(getActivity(), data);
+        Utils.improveAppsInfo(getActivity(), data);
 
         mGridView.addHeaderView(makeHeaderOrFooterView());
         mGridView.addFooterView(makeHeaderOrFooterView());

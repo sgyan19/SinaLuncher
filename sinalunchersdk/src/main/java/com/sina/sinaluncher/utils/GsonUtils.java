@@ -5,7 +5,7 @@
  *  which accompanies this distribution, and is available at
  *
  *****************************************************************************/
-package com.sina.sinaluncher.core;
+package com.sina.sinaluncher.utils;
 
 import java.io.Reader;
 import java.lang.reflect.Type;

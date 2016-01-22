@@ -1,6 +1,8 @@
 package com.sina.sinaluncher;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -35,6 +37,13 @@ public class SALEntryView extends FrameLayout implements View.OnClickListener{
 
     private void init(Context context){
         LayoutInflater.from(context).inflate(R.layout.sal_entry, this, true);
+        Handler handler = new Handler();
+        Global.getInstance().init((Activity) context, new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }, handler);
         ImageView mainBtn = (ImageView) findViewById(R.id.main_button);
         mainBtn.setOnClickListener(this);
     }

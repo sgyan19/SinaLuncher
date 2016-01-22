@@ -1,20 +1,23 @@
 package com.sina.sinaluncherdemo;
 
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
+import com.google.gson.reflect.TypeToken;
 import com.sina.sinaluncher.SALEntryView;
-import com.sina.sinaluncher.core.GsonUtils;
 import com.sina.sinaluncher.core.SALInfo;
+import com.sina.sinaluncher.utils.GsonUtils;
 import com.sina.sinaluncher.core.SALModel;
-import com.sina.sinaluncher.network.ServerSimpleRequest;
 
-import java.util.HashMap;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -26,11 +29,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                String json = "{\"appList\":[{\"appName\": \"新浪视频\",\"packageName\": \"com.sina.sinavideo\",\"appIcon\": \"http://XXX\",\"unInstallIcon\": \"http://XXX\"},{\"appName\": \"新浪体育\",\"packageName\": \"cn.com.sina.sports\",\"appIcon\": \"http://XXX\",\"unInstallIcon\": \"http://XXX\"},{\"appName\": \"新浪微博\",\"packageName\": \"com.sina.weibo\",\"appIcon\": \"http://XXX\",\"unInstallIcon\": \"http://XXX\"}]}";
-                SALModel model = GsonUtils.fromJson(json,SALModel.class);
-
-
 //                new AsyncTask<Void,Void,String>(){
 //                    @Override
 //                    protected String doInBackground(Void... params) {

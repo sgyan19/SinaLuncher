@@ -8,11 +8,11 @@ import android.widget.RelativeLayout;
 /**
  * Created by sinash94857 on 2016/1/12.
  */
-public class FiexdSizeLayout extends RelativeLayout {
+public class FullScreenSizeLayout extends RelativeLayout {
 
     private int widthMeasureSpec;
     private int heightMeasureSpec;
-    public FiexdSizeLayout(Context context, AttributeSet attrs){
+    public FullScreenSizeLayout(Context context, AttributeSet attrs){
         super(context, attrs);
         DisplayMetrics metrics =context.getResources().getDisplayMetrics();
         widthMeasureSpec =MeasureSpec.makeMeasureSpec( metrics.widthPixels,MeasureSpec.EXACTLY);
