@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.sina.sinaluncher.core.SALInfo;
 import com.sina.sinaluncher.ui.MainDialogFragment;
 
 /**
@@ -19,7 +20,7 @@ import com.sina.sinaluncher.ui.MainDialogFragment;
 public class SALEntryView extends FrameLayout implements View.OnClickListener{
 
     private OnClickListener outListener;
-
+    private ImageView mainBtn;
     public SALEntryView(Context context){
         super(context);
         init(context);
@@ -31,21 +32,34 @@ public class SALEntryView extends FrameLayout implements View.OnClickListener{
     }
 
     public SALEntryView(Context context, AttributeSet attrs){
-        super(context,attrs);
+        super(context, attrs);
         init(context);
     }
 
     private void init(Context context){
         LayoutInflater.from(context).inflate(R.layout.sal_entry, this, true);
+
+        mainBtn = (ImageView) findViewById(R.id.main_button);
         Handler handler = new Handler();
         Global.getInstance().init((Activity) context, new Runnable() {
             @Override
             public void run() {
-
+                switch (Global.getInstance().getEntryStatus()) {
+                    case SALInfo.ENTRY_STATUS_HIDE:
+                        setVisibility(INVISIBLE);
+                        mainBtn.setOnClickListener(null);
+                        break;
+                    case SALInfo.ENTRY_STATUS_SHOW:
+                        setVisibility(VISIBLE);
+                        mainBtn.setOnClickListener(null);
+                        break;
+                    case SALInfo.ENTRY_STATUS_USE:
+                        setVisibility(VISIBLE);
+                        mainBtn.setOnClickListener(SALEntryView.this);
+                        break;
+                }
             }
         }, handler);
-        ImageView mainBtn = (ImageView) findViewById(R.id.main_button);
-        mainBtn.setOnClickListener(this);
     }
 
     private void init(Context context,int resLayout){

@@ -7,10 +7,14 @@ import android.graphics.drawable.Drawable;
  * Created by sinash94857 on 2016/1/7.
  */
 public class SALInfo {
+    public static final int ENTRY_STATUS_HIDE = 1;
+    public static final int ENTRY_STATUS_SHOW = 2;
+    public static final int ENTRY_STATUS_USE = 3;
+
     public int appId = 0;
     public String packageName = "";
     public String appName = "";
-    public int entryStatus = 1;
+    public int entryStatus = ENTRY_STATUS_HIDE;
     public String iconUrl;
     public String inList = "yse";
     public String downloadUrl = "";

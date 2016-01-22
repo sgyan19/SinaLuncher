@@ -17,8 +17,10 @@ import com.sina.sinaluncher.core.SALModel;
 import com.sina.sinaluncher.db.SALDao;
 import com.sina.sinaluncher.network.ServerCenter;
 import com.sina.sinaluncher.network.ServerConfig;
+import com.sina.sinaluncher.network.ServerSimpleRequest;
 import com.sina.sinaluncher.utils.Utils;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
@@ -56,6 +58,7 @@ public class Global {
                     SALDao dao = new SALDao(activity);
                     appData = dao.read();
                     self = Utils.improveAppsInfo(activity, appData);
+                    initIconDrawable(activity,appData);
                     InitStatus = INIT_STATUS_LOCAL;
                     Global.this.handler.post(notify);
                 }
@@ -70,11 +73,6 @@ public class Global {
         }.execute();
     }
 
-    public void setCallBack(Runnable callback,Handler handler){
-        notify = callback;
-        this.handler = handler;
-    }
-
     public int getEntryStatus(){
         return self.entryStatus;
     }
@@ -84,8 +82,12 @@ public class Global {
     }
 
     private void initIconDrawable(Context context,List<SALInfo> data){
-        for(SALInfo item : data){
-
+        try {
+            for (SALInfo item : data) {
+                item.appIconDrawable = ServerSimpleRequest.getDrawable(context, item.downloadUrl);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
         }
     }
 
@@ -94,11 +96,12 @@ public class Global {
             List<SALModel> model = ServerCenter.getServerData();
             appData = Utils.converModel(model);
             InitStatus = INIT_STATUS_NETWORK;
-            if(notify != null && handler != null){
-                handler.post(notify);
-            }
             Activity activity = activityWeakReference.get();
             if(activity != null) {
+                initIconDrawable(activity,appData);
+                if(notify != null && handler != null){
+                    handler.post(notify);
+                }
                 SALDao dao = new SALDao(activity);
                 dao.clean();
                 dao.write(appData);
