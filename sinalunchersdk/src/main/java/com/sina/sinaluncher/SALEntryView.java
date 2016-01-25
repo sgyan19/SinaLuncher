@@ -9,10 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.sina.sinaluncher.core.SALInfo;
+import com.sina.sinaluncher.ui.GridViewAdaper;
 import com.sina.sinaluncher.ui.MainDialogFragment;
+import com.sina.sinaluncher.utils.Utils;
 
 /**
  * Created by sinash94857 on 2016/1/7.
@@ -54,12 +57,13 @@ public class SALEntryView extends FrameLayout implements View.OnClickListener{
                         break;
                     case SALInfo.ENTRY_STATUS_HIDE:
                         // TODO:隐藏时的逻辑
-                        // setVisibility(INVISIBLE);
-                        // mainBtn.setOnClickListener(null);
-                        // break;
+                         setVisibility(INVISIBLE);
+                         mainBtn.setOnClickListener(null);
+                         break;
                     case SALInfo.ENTRY_STATUS_USE:
                         setVisibility(VISIBLE);
                         mainBtn.setOnClickListener(SALEntryView.this);
+                        GridViewAdaper.resetIfExist(Global.getInstance().getAppList());
                         break;
                 }
             }

@@ -9,6 +9,7 @@ import com.sina.sinaluncher.core.SALInfo;
 import com.sina.sinaluncher.R;
 import com.sina.sinaluncher.ui.widget.CheckableLayout;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -16,8 +17,25 @@ import java.util.List;
  */
 public class GridViewAdaper extends BaseArrayAdapter<SALInfo,GridItemHolder> {
 
+    private List<SALInfo> container;
+
+    private static WeakReference<GridViewAdaper> weakInstance;
+
+    public static GridViewAdaper getInstanceIfExist(){
+        return weakInstance == null ? null : weakInstance.get();
+    }
     public void setItemMeasureListener(IItemMeasureListener listener){
         CheckableLayout.listener = listener;
+    }
+
+
+    public static void resetIfExist(List<SALInfo> objects){
+        GridViewAdaper in;
+        if(weakInstance != null && (in = weakInstance.get()) != null){
+            in.container.clear();
+            in.container.addAll(objects);
+            in.notifyDataSetChanged();
+        }
     }
 
     public void clearItemMeasureListener(){
@@ -26,6 +44,8 @@ public class GridViewAdaper extends BaseArrayAdapter<SALInfo,GridItemHolder> {
 
     public GridViewAdaper(Context context, List<SALInfo> objects){
         super(context, R.layout.sal_grid_item,objects);
+        container = objects;
+        weakInstance = new WeakReference<GridViewAdaper>(this);
     }
 
     @Override

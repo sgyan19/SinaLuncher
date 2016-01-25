@@ -98,7 +98,7 @@ public class MainDialogFragment extends DialogFragment implements AdapterView.On
 
     private View makeHeaderOrFooterView(){
         View v = new View(getActivity());
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        //DisplayMetrics metrics = getResources().getDisplayMetrics();
         int size = getResources().getDimensionPixelSize(R.dimen.dialog_fragment_grid_vertical_padding);
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,size);
         v.setLayoutParams(params);
