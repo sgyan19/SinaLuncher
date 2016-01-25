@@ -12,5 +12,6 @@ public class GridItemHolder {
     public ImageView mIconView;
     public TextView mNameView;
     public CheckableLayout mCheckableView;
-    public ImageView mNoInstallShadow;
+    public ImageView mBlackShadow;
+    public ImageView mShadow;
 }

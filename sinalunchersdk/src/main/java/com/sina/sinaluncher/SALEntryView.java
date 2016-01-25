@@ -23,16 +23,19 @@ public class SALEntryView extends FrameLayout implements View.OnClickListener{
     private ImageView mainBtn;
     public SALEntryView(Context context){
         super(context);
+        setVisibility(INVISIBLE);
         init(context);
     }
 
     public SALEntryView(Context context,int resLayout){
         super(context);
+        setVisibility(INVISIBLE);
         init(context,resLayout);
     }
 
     public SALEntryView(Context context, AttributeSet attrs){
         super(context, attrs);
+        setVisibility(INVISIBLE);
         init(context);
     }
 
@@ -45,14 +48,15 @@ public class SALEntryView extends FrameLayout implements View.OnClickListener{
             @Override
             public void run() {
                 switch (Global.getInstance().getEntryStatus()) {
-                    case SALInfo.ENTRY_STATUS_HIDE:
-                        setVisibility(INVISIBLE);
-                        mainBtn.setOnClickListener(null);
-                        break;
                     case SALInfo.ENTRY_STATUS_SHOW:
                         setVisibility(VISIBLE);
                         mainBtn.setOnClickListener(null);
                         break;
+                    case SALInfo.ENTRY_STATUS_HIDE:
+                        // TODO:隐藏时的逻辑
+                        // setVisibility(INVISIBLE);
+                        // mainBtn.setOnClickListener(null);
+                        // break;
                     case SALInfo.ENTRY_STATUS_USE:
                         setVisibility(VISIBLE);
                         mainBtn.setOnClickListener(SALEntryView.this);

@@ -186,12 +186,14 @@ public class ServerSimpleRequest {
 
     public static Drawable getDrawable(Context context,String theUrl) throws IOException {
         String cacheDir = StorageUtils.getCacheDir(context);
-        int begin = theUrl.lastIndexOf('/');
+        int begin = theUrl.lastIndexOf('/') + 1;
         String name = theUrl.substring(begin);
         File picFile =  new File(cacheDir,name);
         String newPath = picFile.getAbsolutePath();
         if(picFile.exists()){
             return BitmapDrawable.createFromPath(newPath);
+        }else{
+            picFile.createNewFile();
         }
 
         URL url;

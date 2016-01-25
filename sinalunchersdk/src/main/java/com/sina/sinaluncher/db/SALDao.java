@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class SALDao {
     private final static String dbFileName = "SinaLuncher.db";
-    private final static String appTabelName = "app";
+    private final static String appTabelName = "appList";
 //    private final static String entryTabelName = "entry";
     protected  SQLiteDatabase db = null;
 
@@ -41,16 +41,17 @@ public class SALDao {
 
     public static void createTable(SQLiteDatabase db, boolean ifNotExists){
         String constraint = ifNotExists ? "IF NOT EXISTS " : "";
-        db.execSQL("CREATE TABLE " + constraint
-                + "'app' ("
+        String sql = "CREATE TABLE " + constraint
+                + "'appList' ("
                 + "'appId' INTEGER PRIMARY KEY,"
                 + "'packageName' TEXT,"
                 + "'appName' TEXT,"
                 + "'inList' TEXT,"
                 + "'iconUrl' TEXT,"
                 + "'entryStatus' INTEGER,"
-                + "'downloadUrl' TEXT,"
-                + ");");
+                + "'downloadUrl' TEXT"
+                + ");";
+        db.execSQL(sql);
 //        db.execSQL("CREATE TABLE " + constraint
 //                + "'entry' ("
 //                + "'packageName' TEXT PRIMARY KEY,"
@@ -77,7 +78,7 @@ public class SALDao {
     }
 
     public void clean(){
-        db.execSQL("truncate table " + appTabelName);
+        db.execSQL("DELETE FROM " + appTabelName);
     }
 
     public void write(List<SALInfo> data){
@@ -90,7 +91,7 @@ public class SALDao {
             cv.put("appName",item.appName);
             cv.put("iconUrl",item.iconUrl);
             cv.put("inList",item.inList);
-            cv.put("downlaodUrl",item.downloadUrl);
+            cv.put("downloadUrl",item.downloadUrl);
             cv.put("entryStatus",item.entryStatus);
             db.insert(appTabelName,null,cv);
         }
@@ -98,6 +99,9 @@ public class SALDao {
         db.endTransaction();
     }
 
+    public void close(){
+        db.close();
+    }
 //    public int read(String packageName){
 //        List<SALInfo> result = new ArrayList<SALInfo>();
 //        Cursor cursor ;

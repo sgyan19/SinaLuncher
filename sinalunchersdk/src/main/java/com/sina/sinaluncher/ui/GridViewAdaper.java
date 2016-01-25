@@ -38,7 +38,8 @@ public class GridViewAdaper extends BaseArrayAdapter<SALInfo,GridItemHolder> {
         holder.mIconView = (ImageView)v.findViewById(R.id.icon);
         holder.mNameView = (TextView) v.findViewById(R.id.name);
         holder.mCheckableView = (CheckableLayout) v.findViewById(R.id.container);
-        holder.mNoInstallShadow =(ImageView) v.findViewById(R.id.shadow);
+        holder.mBlackShadow = (ImageView) v.findViewById(R.id.black_shadow);
+        holder.mShadow =(ImageView) v.findViewById(R.id.shadow);
     }
 
     @Override
@@ -47,14 +48,21 @@ public class GridViewAdaper extends BaseArrayAdapter<SALInfo,GridItemHolder> {
 
     @Override
     protected void bundleValue(int position, GridItemHolder holder, SALInfo item) {
-        if(item.appIcon != 0)
-            holder.mIconView.setImageResource(item.appIcon);
+        if(item.appIconDrawable != null)
+            holder.mIconView.setImageDrawable(item.appIconDrawable);
         holder.mNameView.setText(item.appName);
         holder.mCheckableView.setChecked(item.isInstall);
         if(item.self){
-            holder.mNoInstallShadow.setImageResource(R.drawable.sal_self_shadow);
+            holder.mShadow.setImageResource(R.drawable.sal_self_shadow);
+            holder.mShadow.setVisibility(View.VISIBLE);
+            holder.mBlackShadow.setVisibility(View.INVISIBLE);
         }else if(!item.isInstall){
-            holder.mNoInstallShadow.setImageResource(R.drawable.sal_uninstall_shadow);
+            holder.mShadow.setImageResource(R.drawable.sal_uninstall_shadow);
+            holder.mShadow.setVisibility(View.VISIBLE);
+            holder.mBlackShadow.setVisibility(View.VISIBLE);
+        }else{
+            holder.mShadow.setVisibility(View.INVISIBLE);
+            holder.mBlackShadow.setVisibility(View.INVISIBLE);
         }
     }
 }

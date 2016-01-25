@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
+import com.sina.sinaluncher.Global;
 import com.sina.sinaluncher.R;
 import com.sina.sinaluncher.core.SALInfo;
 import com.sina.sinaluncher.utils.Utils;
@@ -55,8 +56,7 @@ public class MainDialogFragment extends DialogFragment implements AdapterView.On
         super.onViewCreated(view, savedInstanceState);
         mGridView = (AutoHeightGridView) view.findViewById(R.id.sal_gridview);
         mGridContainer = (ViewGroup) view.findViewById(R.id.grid_container);
-        List<SALInfo> data = Utils.getTestData();
-        Utils.improveAppsInfo(getActivity(), data);
+        List<SALInfo> data = Global.getInstance().getAppList();
 
         mGridView.addHeaderView(makeHeaderOrFooterView());
         mGridView.addFooterView(makeHeaderOrFooterView());
@@ -109,10 +109,12 @@ public class MainDialogFragment extends DialogFragment implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         position = position + mGridView.getNumColumns() * mGridView.getHeaderViewCount();
         SALInfo info = (SALInfo)mGridView.getAdapter().getItem(position);
-        if(info.isInstall){
-            Utils.jumpApp(getActivity(),info);
-        }else{
-            Utils.jumpMarket(getActivity(),info);
+        if (!info.self) {
+            if (info.isInstall) {
+                Utils.jumpApp(getActivity(), info);
+            } else {
+                Utils.jumpMarket(getActivity(), info);
+            }
         }
         dismiss();
     }

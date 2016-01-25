@@ -23,8 +23,4 @@ public class SALInfo {
     public boolean self = false;
     public Intent intent = null;
     public Drawable appIconDrawable = null;
-    public Drawable inInstallIconDrawable = null;
-
-    // 废弃
-    public int appIcon = 0;
 }

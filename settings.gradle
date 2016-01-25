@@ -1,1 +1,1 @@
-include ':app', ':sinalunchersdk', ':sinaluncherdemo'
+include ':sinalunchersdk', ':sinaluncherdemo'

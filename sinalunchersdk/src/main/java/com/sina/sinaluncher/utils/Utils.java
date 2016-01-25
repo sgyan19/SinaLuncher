@@ -27,98 +27,6 @@ import java.util.List;
  */
 public class Utils {
 
-    public static List<SALInfo> getTestData(){
-        List<SALInfo> list = new ArrayList<SALInfo>();
-
-        int index = 0;
-        SALInfo info;
-
-        info = new SALInfo();
-        info.appName = "新浪视频";
-        info.packageName = "com.sina.sinavideo";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinavideo_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪体育";
-        info.packageName = "cn.com.sina.sports";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinasports_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪微博";
-        info.packageName = "com.sina.weibo";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinaweibo_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪视频";
-        info.packageName = "com.sina.sinavideo";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinavideo_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪体育";
-        info.packageName = "cn.com.sina.sports";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinasports_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪微博";
-        info.packageName = "com.sina.weibo";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinaweibo_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪视频";
-        info.packageName = "com.sina.sinavideo";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinavideo_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪体育";
-        info.packageName = "cn.com.sina.sports";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinasports_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪微博";
-        info.packageName = "com.sina.weibo";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinaweibo_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪视频";
-        info.packageName = "com.sina.sinavideo";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinavideo_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪体育";
-        info.packageName = "cn.com.sina.sports";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinasports_icon;
-        list.add(info);
-
-        info = new SALInfo();
-        info.appName = "新浪快速入口";
-        info.packageName = "com.sina.sinaluncherdemo";
-        info.appId = index++;
-        info.appIcon = R.drawable.sinasports_icon;
-        list.add(info);
-        return list;
-    }
-
     public static void removeSelf(Context context,List<SALInfo> data){
         Iterator<SALInfo> iterator = data.iterator();
         while(iterator.hasNext()){
@@ -183,6 +91,25 @@ public class Utils {
             }
         }
         return self;
+    }
+
+    /**
+     * 未安装的放在后面
+     * @param sALInfos
+     * @return
+     */
+    public static List<SALInfo> sort(List<SALInfo> sALInfos){
+        List<SALInfo> result = new ArrayList<SALInfo>();
+        List<SALInfo> noInstalled = new ArrayList<SALInfo>();
+        for(SALInfo item : sALInfos){
+            if(item.isInstall){
+                result.add(item);
+            }else{
+                noInstalled.add(item);
+            }
+        }
+        result.addAll(noInstalled);
+        return result;
     }
 
     // 通过包名检测系统中是否安装某个应用程序
