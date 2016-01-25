@@ -44,7 +44,6 @@ public class SALEntryView extends FrameLayout implements View.OnClickListener{
 
     private void init(Context context){
         LayoutInflater.from(context).inflate(R.layout.sal_entry, this, true);
-
         mainBtn = (ImageView) findViewById(R.id.main_button);
         Handler handler = new Handler();
         Global.getInstance().init((Activity) context, new Runnable() {
